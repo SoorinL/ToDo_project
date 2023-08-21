@@ -1,25 +1,14 @@
-import { useState } from "react";
-import AddToDo from "./components/AddToDo/AddToDo";
 import ToDoList from "./components/ToDoList/ToDoList";
+import Header from "./components/Header/Header";
+import { useState } from "react";
 
+const filters = ["all", "active", "completed"];
 function App() {
-  const [toDoList, setToDoList] = useState([]);
-  const addToDoHandler = (toDo) => {
-    console.log("app:: ", toDo);
-    setToDoList((prev) => {
-      return [...prev, toDo];
-    });
-  };
-
+  const [filter, setFilter] = useState(filters[0]);
   return (
     <div>
-      <header>
-        <button>All</button>
-        <button>Active</button>
-        <button>Completed</button>
-      </header>
-      <ToDoList data={toDoList}></ToDoList>
-      <AddToDo onAddToDo={addToDoHandler}></AddToDo>
+      <Header filters={filters} filter={filter} onFilterChange={setFilter} />
+      <ToDoList filter={filter} />
     </div>
   );
 }

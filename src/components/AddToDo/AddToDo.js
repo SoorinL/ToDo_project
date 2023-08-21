@@ -1,33 +1,30 @@
 import { useState } from "react";
-
-const initialToDo = {
-  id: Math.random().toString(),
-  content: "",
-};
+import { v4 as uuidv4 } from "uuid";
 
 const AddToDo = (props) => {
-  const [toDo, setToDo] = useState(initialToDo);
+  const [content, setContent] = useState("");
 
   const onChangeHandler = (event) => {
-    setToDo((prev) => {
-      return {
-        ...prev,
-        id: Math.random().toString(),
-        content: event.target.value,
-      };
-    });
+    setContent(event.target.value);
   };
 
   const onAddHandler = (event) => {
     event.preventDefault();
-    props.onAddToDo(toDo);
-    console.log(toDo);
-    setToDo(initialToDo);
+    if (content.trim().length === 0) {
+      return;
+    }
+    props.onAddToDo({
+      id: uuidv4(),
+      content,
+      status: "active",
+    });
+    setContent("");
   };
   return (
     <form onSubmit={onAddHandler}>
       <input
-        value={toDo.content}
+        type="text"
+        value={content}
         placeholder="Add Todo"
         onChange={onChangeHandler}
       ></input>
